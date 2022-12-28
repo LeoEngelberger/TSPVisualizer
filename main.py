@@ -18,22 +18,25 @@ class MainGame():
         self.screen = pygame.display.set_mode((1920, 1080))
         self.screen_x, self.screen_y = self.screen.get_size()
         self.background = pygame.transform.scale(pygame.image.load("map.png"), self.screen.get_size())
-        self.right_most_lat, self.bot_most_long = 47.9, 5.85
+        self.left_most_long, self.bot_most_lat = 5.85,45.73
         self.lat_range = 47.9-45.73
         self.long_range = 10.58-5.85
-        self.pixel_per_lat_degree = self.screen_x / self.lat_range
-        self.pixel_per_long_degree = self.screen_y / self.long_range
+        self.pixel_per_long_degree = self.screen_x / self.long_range
+        self.pixel_per_lat_degree = self.screen_y / self.lat_range
         self.screen.blit(self.background, (0,0))
-        self.testVertex2 = Vertex(100,100,blue,5.86,45.73)
+        self.testVertex2 = Vertex(100,100,blue,5.85,45.73)
         self.testVertex = Vertex(10,10,red,8.539183,47.36865)
+        #self.screen.blit(self.testVertex2.image, self.convert_coordinates(self.testVertex2))
         self.screen.blit(self.testVertex.image, self.convert_coordinates(self.testVertex))
 
         self.main_loop()
 
     def convert_coordinates(self,vertex):
-        x = (self.right_most_lat-vertex.lat) * self.pixel_per_lat_degree
-        y = (vertex.long-self.bot_most_long ) * self.pixel_per_long_degree
-        return y,x
+        x = ((vertex.long - self.left_most_long) * self.pixel_per_long_degree)
+        y = (-1)*(((vertex.lat - self.bot_most_lat) * self.pixel_per_lat_degree) - self.screen_y)
+        if x == self.screen_x: x = x-10
+        if y == self.screen_y: y = y - 10
+        return x,y
     def main_loop(self):
         while self.game_running:
             for event in pygame.event.get():
