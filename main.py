@@ -26,7 +26,7 @@ class MainGame():
         self.screen.blit(self.background, (0,0))
         self.testVertex2 = Vertex(100,100,blue,5.85,45.73)
         self.testVertex = Vertex(10,10,red,8.539183,47.36865)
-        #self.screen.blit(self.testVertex2.image, self.convert_coordinates(self.testVertex2))
+        self.screen.blit(self.testVertex2.image, self.convert_coordinates(self.testVertex2))
         self.screen.blit(self.testVertex.image, self.convert_coordinates(self.testVertex))
 
         self.main_loop()
@@ -35,6 +35,7 @@ class MainGame():
         x = ((vertex.long - self.left_most_long) * self.pixel_per_long_degree)
         y = (-1)*(((vertex.lat - self.bot_most_lat) * self.pixel_per_lat_degree) - self.screen_y)
         if x == self.screen_x: x = x-10
+        else: x = x-5
         if y == self.screen_y: y = y - 10
         return x,y
     def main_loop(self):
