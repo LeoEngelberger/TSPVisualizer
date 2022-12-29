@@ -4,40 +4,73 @@ import numpy as np
 from mpl_toolkits.basemap import Basemap
 import sqlite3
 import matplotlib.pyplot as plt
-#self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
 
-red=(255,0,0)
-blue=(0,0,255)
-green=(0,255,0)
+# self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
+
+red = (255, 0, 0)
+blue = (0, 0, 255)
+green = (0, 255, 0)
+
+pygame.init()
+screen_x, screen_y = 1920,1080
+screen = pygame.display.set_mode((screen_x,screen_y))
+
+
+class Main_Menu():
+    def __init__(self):
+        self.font = pygame.font.Font('Targa.ttf', 64)
+        self.items = [("start game", self.start_game)]
+
+    def start_game(self):
+        pass
+
 
 class MainGame():
     def __init__(self):
         self.game_running = True
-        self.window_divider = 5
-        pygame.init()
-        self.screen = pygame.display.set_mode((1920, 1080))
-        self.screen_x, self.screen_y = self.screen.get_size()
-        self.background = pygame.transform.scale(pygame.image.load("map.png"), self.screen.get_size())
-        self.left_most_long, self.bot_most_lat = 5.85,45.73
-        self.lat_range = 47.9-45.73
-        self.long_range = 10.58-5.85
-        self.pixel_per_long_degree = self.screen_x / self.long_range
-        self.pixel_per_lat_degree = self.screen_y / self.lat_range
-        self.screen.blit(self.background, (0,0))
-        self.testVertex2 = Vertex(100,100,blue,5.85,45.73)
-        self.testVertex = Vertex(10,10,red,8.539183,47.36865)
-        self.screen.blit(self.testVertex2.image, self.convert_coordinates(self.testVertex2))
-        self.screen.blit(self.testVertex.image, self.convert_coordinates(self.testVertex))
+        self.amount_of_vertices = 7
 
+        self.setup_screen()
+        self.setup_map()
         self.main_loop()
 
-    def convert_coordinates(self,vertex):
+    def setup_screen(self):
+
+
+        self.background = pygame.transform.scale(pygame.image.load("map.png"), screen.get_size())
+
+    def setup_map(self):
+        self.left_most_long, self.bot_most_lat = 5.85, 45.73
+        self.lat_range = 47.9 - 45.73
+        self.long_range = 10.58 - 5.85
+        self.pixel_per_long_degree = screen_x / self.long_range
+        self.pixel_per_lat_degree = screen_y / self.lat_range
+        screen.blit(self.background, (0, 0))
+        self.Vertices = pygame.sprite.Group()
+        self.load_in_vertices()
+
+    def load_in_vertices(self):
+        conn = sqlite3.connect('Locations.db')
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Location ORDER BY RANDOM()")
+        Location = cursor.fetchmany(self.amount_of_vertices)
+        for place in Location:
+            temp_vert = Vertex(red, place[2], place[3])
+            self.Vertices.add(temp_vert)
+            screen.blit(temp_vert.image, self.convert_coordinates(temp_vert))
+        cursor.close()
+        conn.close()
+
+    def convert_coordinates(self, vertex):
         x = ((vertex.long - self.left_most_long) * self.pixel_per_long_degree)
-        y = (-1)*(((vertex.lat - self.bot_most_lat) * self.pixel_per_lat_degree) - self.screen_y)
-        if x == self.screen_x: x = x-10
-        else: x = x-5
-        if y == self.screen_y: y = y - 10
-        return x,y
+        y = (-1) * (((vertex.lat - self.bot_most_lat) * self.pixel_per_lat_degree) - screen_y)
+        if x == screen_x:
+            x = x - 10
+        else:
+            x = x - 5
+        if y == screen_y: y = y - 10
+        return x, y
+
     def main_loop(self):
         while self.game_running:
             for event in pygame.event.get():
@@ -48,15 +81,15 @@ class MainGame():
                     self.game_running = False
             pygame.display.flip()
 
+
 class Vertex(pygame.sprite.Sprite):
-    def __init__(self,width,height,color,long,lat):
-        self.image = pygame.Surface([width,height])
+    def __init__(self, color, long, lat):
+        super(Vertex, self).__init__()
+        self.image = pygame.Surface([10, 10])
         self.image.fill(color)
         self.rect = self.image.get_rect()
         self.long, self.lat = long, lat
 
 
-
-
-
+main_menu = Main_Menu()
 game = MainGame()

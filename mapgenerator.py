@@ -21,18 +21,9 @@ m.drawcoastlines()
 m.drawcountries()
 
 # Draw lat/lon grid lines every 30 degrees.
-m.drawmeridians(range(-180, 180, 30))
-m.drawparallels(range(-90, 90, 30))
+m.drawmeridians(range(-180, 180, 1))
+m.drawparallels(range(-90, 90, 1))
 
-# Set the real-world coordinates of the location you want to plot
-lat = 47.36
-lon = 8.539
-
-# Convert the lat/lon coordinates to map projection coordinates
-x, y = m(lon, lat)
-
-# Plot the location on the map
-m.plot(x, y, 'ro', markersize=10)
 
 plt.autoscale()
 # Save the map as an image file
