@@ -28,7 +28,7 @@ class Main_Menu():
 class MainGame():
     def __init__(self):
         self.game_running = True
-        self.amount_of_vertices = 7
+        self.amount_of_vertices = 10
 
         self.setup_screen()
         self.setup_map()
@@ -55,7 +55,7 @@ class MainGame():
         cursor.execute("SELECT * FROM Location ORDER BY RANDOM()")
         Location = cursor.fetchmany(self.amount_of_vertices)
         for place in Location:
-            temp_vert = Vertex(red, place[2], place[3])
+            temp_vert = Vertex(red,place[0],place[1], place[2], place[3])
             self.Vertices.add(temp_vert)
             screen.blit(temp_vert.image, self.convert_coordinates(temp_vert))
         cursor.close()
@@ -83,12 +83,13 @@ class MainGame():
 
 
 class Vertex(pygame.sprite.Sprite):
-    def __init__(self, color, long, lat):
+    def __init__(self, color,id,name, long, lat):
         super(Vertex, self).__init__()
+        self.name, self.id, self.long, self.lat = name, id, long, lat
         self.image = pygame.Surface([10, 10])
         self.image.fill(color)
         self.rect = self.image.get_rect()
-        self.long, self.lat = long, lat
+
 
 
 main_menu = Main_Menu()
