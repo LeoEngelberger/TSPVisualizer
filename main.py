@@ -12,9 +12,10 @@ blue = (0, 0, 255)
 green = (0, 255, 0)
 
 pygame.init()
-screen_x, screen_y = 1920,1080
+screen_x, screen_y = 2560,1444
 screen = pygame.display.set_mode((screen_x,screen_y))
 
+amount_of_vertices = 10
 
 class Main_Menu():
     def __init__(self):
@@ -28,7 +29,6 @@ class Main_Menu():
 class MainGame():
     def __init__(self):
         self.game_running = True
-        self.amount_of_vertices = 7
 
         self.setup_screen()
         self.setup_map()
@@ -53,9 +53,9 @@ class MainGame():
         conn = sqlite3.connect('Locations.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM Location ORDER BY RANDOM()")
-        Location = cursor.fetchmany(self.amount_of_vertices)
+        Location = cursor.fetchmany(amount_of_vertices)
         for place in Location:
-            temp_vert = Vertex(red, place[2], place[3])
+            temp_vert = Vertex(red, place[1], place[2], place[3])
             self.Vertices.add(temp_vert)
             screen.blit(temp_vert.image, self.convert_coordinates(temp_vert))
         cursor.close()
@@ -69,12 +69,19 @@ class MainGame():
         else:
             x = x - 5
         if y == screen_y: y = y - 10
+        vertex.rect.x, vertex.rect.y = (x,y)
         return x, y
 
     def main_loop(self):
         while self.game_running:
             for event in pygame.event.get():
 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+                    print(mouse_pos)
+                    for i, t_Vertex in enumerate(self.Vertices):
+                        if t_Vertex.rect.collidepoint(mouse_pos):
+                            print(t_Vertex.name)
                 # if event is of type quit then
                 # set running bool to false
                 if event.type == pygame.QUIT:
@@ -83,11 +90,13 @@ class MainGame():
 
 
 class Vertex(pygame.sprite.Sprite):
-    def __init__(self, color, long, lat):
+    def __init__(self, color, name, long, lat):
         super(Vertex, self).__init__()
-        self.image = pygame.Surface([10, 10])
+        self.image = pygame.Surface([20, 20])
         self.image.fill(color)
+        self.name = name
         self.rect = self.image.get_rect()
+        self.rect.width, self.rect.height = (30,30)
         self.long, self.lat = long, lat
 
 
