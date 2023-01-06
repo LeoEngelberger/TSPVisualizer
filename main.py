@@ -7,17 +7,6 @@ from mpl_toolkits.basemap import Basemap
 import sqlite3
 import matplotlib.pyplot as plt
 
-# self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
-
-red = (255, 0, 0)
-blue = (0, 0, 255)
-green = (0, 255, 0)
-
-pygame.init()
-screen_x, screen_y = 1920, 1080
-screen = pygame.display.set_mode((screen_x, screen_y))
-
-
 class MainMenu:
     def __init__(self):
         self.font = pygame.font.Font('Targa.ttf', 64)
@@ -35,6 +24,18 @@ class MainMenu:
     def start_game(self):
         self.is_enabled = False
 
+# self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
+
+red = (255, 0, 0)
+blue = (0, 0, 255)
+green = (0, 255, 0)
+
+pygame.init()
+screen_x, screen_y = 1920, 1080
+screen = pygame.display.set_mode((screen_x, screen_y))
+
+
+
 
 class GameSession:
     def __init__(self, number_of_vertices,player):
@@ -44,6 +45,7 @@ class GameSession:
         self.player = player
         self.setup_screen()
         self.setup_map()
+        self.player.set_nodes(self.Vertices)
 
     def setup_screen(self):
         self.background = pygame.transform.scale(pygame.image.load("map.png"), screen.get_size())
@@ -96,18 +98,6 @@ class GameSession:
 
             pygame.display.flip()
 
-class Path(pygame.sprite.Group):
-    def __init__(self):
-        super(Path, self).__init__()
-
-
-class Player:
-    def __init__(self):
-        self.path = Path()
-
-    def add_vertex_to_path(self, vertex):
-        self.path.add(vertex)
-
 
 class Vertex(pygame.sprite.Sprite):
     def __init__(self, color, name, long, lat, player):
@@ -119,13 +109,55 @@ class Vertex(pygame.sprite.Sprite):
         self.rect.width, self.rect.height = (30, 30)
         self.long, self.lat = long, lat
         self.player=player
+        self.has_been_visited = False
 
     def clicked(self):
         print(self.name)
         self.image.fill(green)
+        self.has_been_visited = True
         self.player.add_vertex_to_path(self)
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
+
+class Path(pygame.sprite.Group):
+    def __init__(self):
+        super(Path, self).__init__()
+
+
+class Player:
+    def __init__(self):
+        self.path = Path()
+        self.unvisited_nodes = None
+        self.last_node_visited = None
+        self.current_node = None
+        self.start_node = None
+        self.is_circle = False
+    def set_nodes(self, nodes):
+        self.unvisited_nodes = nodes
+        print(self.unvisited_nodes)
+    def add_vertex_to_path(self, vertex):
+        self.current_node = vertex
+        if not self.last_node_visited:
+            self.start_node = vertex
+        if self.last_node_visited:
+            pos_1 = (self.last_node_visited.rect.x+5, self.last_node_visited.rect.y+5)
+            pos_2 = (self.current_node.rect.x+5, self.current_node.rect.y+5)
+            pygame.draw.line(screen, blue, pos_1, pos_2, 5)
+        self.last_node_visited = self.current_node
+        self.path.add(vertex)
+        self.path.draw(screen)
+        if self.start_node == self.current_node:
+            self.is_circle = True
+            self.check_if_path_complete()
+            print("is circle")
+
+    def check_if_path_complete(self):
+        if self.unvisited_nodes.empty():
+            print("end of game")
+            return True
+        else:
+            print("not all nodes visited")
+            return False
 
 class MainGame:
     def __init__(self):
@@ -154,7 +186,4 @@ class MainGame:
                 pygame.display.update()
 
 
-
-
-#main_menu = MainMenu()
 game = MainGame()
