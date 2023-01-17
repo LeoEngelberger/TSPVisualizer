@@ -1,13 +1,7 @@
 import pygame
-import pygame_menu
-from pygame_menu import themes
-import MapGenerator2_0
-import numpy as np
-from mpl_toolkits.basemap import Basemap
-import sqlite3
-import matplotlib.pyplot as plt
 
-import MainMenu as menu
+
+import Menu as menu
 import GameObjects.Player as player
 import GameSession as GS
 import globals
@@ -18,10 +12,13 @@ pygame.init()
 class MainGame:
     def __init__(self):
         self.globals = globals.Globals()
-        self.main_menu = menu.MainMenu(self.globals.screen_x,self.globals.screen_y)
+        self.main_menu = menu.BaseMenuComp()
+
         self.game_session = None
         self.player = player.PlayerClass()
         self.main_loop()
+        self.background = pygame.transform.scale(pygame.image.load("map.png"), self.globals.screen.get_size())
+
 
     def main_loop(self):
         while True:
@@ -31,12 +28,12 @@ class MainGame:
                     exit()
 
                 if self.main_menu.is_enabled:
-                    self.main_menu.home_menu.update(events)
-                    self.main_menu.home_menu.draw(self.globals.screen)
+                    self.main_menu.update(events)
+
 
                 else:
                     if not self.game_session:
-                        amount_of_vertices = self.main_menu.selector.get_value()[0][1]
+                        amount_of_vertices = 10               #self.main_menu.selector.get_value()[0][1]
                         self.game_session = GS.GameSessionClass(amount_of_vertices, self.player)
                     self.game_session.update(events)
 

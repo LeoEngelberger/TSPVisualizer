@@ -74,3 +74,6 @@ class GameSessionClass:
                 self.game_running = False
 
             pygame.display.flip()
+
+    def end_session(self):
+        pass
