@@ -5,7 +5,7 @@ from pygame_menu import themes
 import globals
 
 
-class BaseMenuComp:
+class BaseUICanvas:
     def __init__(self):
         self.is_enabled = True
         self.items = [("start game", self.start_game), ("set difficulty", self.set_difficulty)]

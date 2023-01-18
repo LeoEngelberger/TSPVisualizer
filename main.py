@@ -12,7 +12,7 @@ pygame.init()
 class MainGame:
     def __init__(self):
         self.globals = globals.Globals()
-        self.main_menu = menu.BaseMenuComp()
+        self.main_menu = menu.BaseUICanvas()
 
         self.game_session = None
         self.player = player.PlayerClass()
