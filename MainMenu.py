@@ -1,14 +1,15 @@
 import pygame
 import pygame_menu
 from pygame_menu import themes
+import globals
 
 class MainMenu:
-    def __init__(self, screen_x, screen_y):
-        self.screen_x, self.screen_y = screen_x, screen_y
-        self.font = pygame.font.Font('Targa.ttf', 64)
-        self.is_enabled = True
+    def __init__(self):
+        self.g = globals.Globals._instance
+
+        self.font = self.g.font
         self.items = [("start game", self.start_game), ("set difficulty", self.set_difficulty)]
-        self.home_menu = pygame_menu.Menu("Problem des Handelsreisenden", screen_x, screen_y,
+        self.home_menu = pygame_menu.Menu("Problem des Handelsreisenden", self.g.screen_x, self.g.screen_y,
                                           theme=themes.THEME_SOLARIZED)
         self.home_menu.add.button("Play", self.start_game)
         self.selector = self.home_menu.add.selector("Difficulty: ", [("Hard", 10), ("Easy", 3)],
@@ -18,5 +19,5 @@ class MainMenu:
         pass
 
     def start_game(self):
-        self.is_enabled = False
+        self.g.menu_is_enabled = False
 

@@ -22,3 +22,4 @@ class Vertex(pygame.sprite.Sprite):
         self.has_been_visited = True
         self.player.add_vertex_to_path(self)
         self.globals.screen.blit(self.image, (self.rect.x, self.rect.y))
+
