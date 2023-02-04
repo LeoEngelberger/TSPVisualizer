@@ -13,7 +13,8 @@ class Globals:
         self.red = (255, 0, 0)
         self.blue = (0, 0, 255)
         self.green = (0, 255, 0)
+        self.menu_is_enabled = True
+        self.font = pygame.font.Font('Targa.ttf', 64)
 
-        self.screen_x, self.screen_y = 1440, 780
-        self.screen_size = self.screen_x, self.screen_y
-        self.screen = pygame.display.set_mode(self.screen_size)
+        self.screen_x, self.screen_y = 1920, 1080
+        self.screen = pygame.display.set_mode((self.screen_x, self.screen_y))

@@ -18,7 +18,7 @@ pygame.init()
 class MainGame:
     def __init__(self):
         self.globals = globals.Globals()
-        self.main_menu = menu.MainMenu(self.globals.screen_x,self.globals.screen_y)
+        self.main_menu = menu.MainMenu()
         self.game_session = None
         self.player = player.PlayerClass()
         self.main_loop()
@@ -30,7 +30,7 @@ class MainGame:
                 if event.type == pygame.QUIT:
                     exit()
 
-                if self.main_menu.is_enabled:
+                if self.globals.menu_is_enabled:
                     self.main_menu.home_menu.update(events)
                     self.main_menu.home_menu.draw(self.globals.screen)
 
