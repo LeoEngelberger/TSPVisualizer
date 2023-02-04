@@ -6,7 +6,7 @@ import GameObjects.Vertex as vert
 
 
 class GameSessionClass:
-    def __init__(self, number_of_vertices, player):
+    def __init__(self, number_of_vertices):
         self.Vertices = None
         self.pixel_per_lat_degree = None
         self.pixel_per_long_degree = None
@@ -19,7 +19,7 @@ class GameSessionClass:
         self.globals = globals.Globals._instance
         self.amount_of_vertices = number_of_vertices
 
-        self.player = player
+        self.player = player.PlayerClass()
         self.setup_screen()
         self.setup_map()
         self.player.set_nodes(self.Vertices)
