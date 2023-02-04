@@ -18,6 +18,7 @@ pygame.init()
 class MainGame:
     def __init__(self):
         self.globals = globals.Globals()
+        self.globals.set_main(self)
         self.main_menu = menu.MainMenu()
         self.game_session = None
         self.player = player.PlayerClass()
@@ -31,16 +32,27 @@ class MainGame:
                     exit()
 
                 if self.globals.menu_is_enabled:
-                    self.main_menu.home_menu.update(events)
-                    self.main_menu.home_menu.draw(self.globals.screen)
+                    self.main_menu.external_update(events)
 
                 else:
-                    if not self.game_session:
-                        amount_of_vertices = self.main_menu.selector.get_value()[0][1]
-                        self.game_session = GS.GameSessionClass(amount_of_vertices, self.player)
                     self.game_session.update(events)
 
                 pygame.display.update()
+                #pygame.display.flip()
+
+    def switch_screen(self):
+        if not self.game_session:
+            self.globals.menu_is_enabled = False
+            amount_of_vertices = self.main_menu.selector.get_value()[0][1]
+            self.game_session = GS.GameSessionClass(amount_of_vertices, self.player)
+
+        else:
+            del(self.game_session)
+            self.game_session = None
+            self.globals.menu_is_enabled = True
+
+        pygame.display.update()
+        #pygame.display.update()
 
 
 

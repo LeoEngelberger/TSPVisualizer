@@ -36,8 +36,8 @@ class PlayerClass:
 
     def check_if_path_complete(self):
         print("path gets check")
-        if len(self.unvisited_nodes) == 0:
-            self.globals.menu_is_enabled=True
+        if len(self.unvisited_nodes) == 0 and self.last_node_visited is not None:
+            self.globals.main.switch_screen()
             return True
         else:
             print("not all nodes visited")

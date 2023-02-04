@@ -15,9 +15,15 @@ class MainMenu:
         self.selector = self.home_menu.add.selector("Difficulty: ", [("Hard", 10), ("Easy", 3)],
                                                     onchange=self.set_difficulty())
 
+    def external_update(self, events):
+        self.home_menu.update(events)
+        if self.g.menu_is_enabled:
+            self.home_menu.draw(self.g.screen)
+
+
     def set_difficulty(self):
         pass
 
     def start_game(self):
-        self.g.menu_is_enabled = False
+        self.g.main.switch_screen()
 

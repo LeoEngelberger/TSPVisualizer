@@ -73,8 +73,3 @@ class GameSessionClass:
             if event.type == pygame.QUIT:
                 self.game_running = False
 
-            pygame.display.flip()
-
-
-    def __del__(self):
-        pass
