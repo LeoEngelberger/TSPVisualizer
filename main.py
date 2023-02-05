@@ -21,24 +21,24 @@ class MainGame:
         self.globals.set_main(self)
         self.main_menu = menu.MainMenu()
         self.game_session = None
-        #self.player = player.PlayerClass()
         self.main_loop()
 
     def main_loop(self):
         while True:
             events = pygame.event.get()
-            for event in events:
-                if event.type == pygame.QUIT:
-                    exit()
-
-                if self.globals.menu_is_enabled:
+            if self.globals.menu_is_enabled:
                     self.main_menu.external_update(events)
 
-                else:
-                    self.game_session.update(events)
+            else:
+                for event in events:
+                    if event.type == pygame.QUIT:
+                        exit()
 
-                pygame.display.update()
-                #pygame.display.flip()
+                    else:
+                        self.game_session.update(event)
+
+            pygame.display.update()
+                    #pygame.display.flip()
 
     def switch_screen(self):
         if not self.game_session:
@@ -47,12 +47,12 @@ class MainGame:
             self.game_session = GS.GameSessionClass(amount_of_vertices)
 
         else:
-            del(self.game_session)
+            del self.game_session
             self.game_session = None
             self.globals.menu_is_enabled = True
 
         pygame.display.update()
-        #pygame.display.update()
+
 
 
 

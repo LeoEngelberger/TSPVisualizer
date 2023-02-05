@@ -7,33 +7,31 @@ import GameObjects.Vertex as vert
 
 class GameSessionClass:
     def __init__(self, number_of_vertices):
-        self.Vertices = None
-        self.pixel_per_lat_degree = None
-        self.pixel_per_long_degree = None
-        self.long_range = None
-        self.lat_range = None
-        self.bot_most_lat = None
-        self.left_most_long = None
-        self.background = None
-        self.game_running = True
         self.globals = globals.Globals._instance
-        self.amount_of_vertices = number_of_vertices
 
-        self.player = player.PlayerClass()
-        self.setup_screen()
-        self.setup_map()
-        self.player.set_nodes(self.Vertices)
+        # specific vars used only for setting up the map and translating
+        # between Planar Pixel Space and Long/Lat coordinate system
+        self.lat_range, self.long_range = 47.9 - 45.73, 10.58 - 5.85
+        self.bot_most_lat, self.left_most_long = 45.73, 5.85
+        self.pixel_per_long_degree = self.globals.screen_x / self.long_range
+        self.pixel_per_lat_degree = self.globals.screen_y / self.lat_range
+
+        # GameObjects
+        self.Vertices = None    # Places to visit
+        self.background = None  # will later be showing Map of Switzerland
+        self.amount_of_vertices = number_of_vertices    # How many places a Player can visit defined by menu
+        self.player = player.PlayerClass()  # handles PlayerInput and Interaction
+
+        # Final Setups pf Objects before Play
+        self.setup_screen()     # set up the game Interface
+        self.setup_map()     # Load and Place Vertices
+        self.player.set_nodes(self.Vertices)    # Inform the Player about the available Places to visit
 
     def setup_screen(self):
         self.background = pygame.transform.scale(pygame.image.load("map.png"), self.globals.screen.get_size())
+        self.globals.screen.blit(self.background, (0, 0))
 
     def setup_map(self):
-        self.left_most_long, self.bot_most_lat = 5.85, 45.73
-        self.lat_range = 47.9 - 45.73
-        self.long_range = 10.58 - 5.85
-        self.pixel_per_long_degree = self.globals.screen_x / self.long_range
-        self.pixel_per_lat_degree = self.globals.screen_y / self.lat_range
-        self.globals.screen.blit(self.background, (0, 0))
         self.Vertices = pygame.sprite.Group()
         self.load_in_vertices()
 
@@ -60,16 +58,13 @@ class GameSessionClass:
         vertex.rect.x, vertex.rect.y = (x, y)
         return x, y
 
-    def update(self, events):
-        for event in events:
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = event.pos
-                print(mouse_pos)
-                for i, t_Vertex in enumerate(self.Vertices):
-                    if t_Vertex.rect.collidepoint(mouse_pos):
-                        t_Vertex.clicked()
-                # if event is of type quit then
-                # set running bool to false
-            if event.type == pygame.QUIT:
-                self.game_running = False
+    def end_game(self):
+        pass
 
+    def update(self, event):
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+
+            for i, t_Vertex in enumerate(self.Vertices):
+                if t_Vertex.rect.collidepoint(event.pos):
+                    t_Vertex.clicked()

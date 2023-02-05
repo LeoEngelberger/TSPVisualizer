@@ -19,7 +19,7 @@ class Vertex(pygame.sprite.Sprite):
     def clicked(self):
         print(self.name)
         self.image.fill(self.globals.green)
-        self.has_been_visited = True
         self.player.add_vertex_to_path(self)
+        self.has_been_visited = True
         self.globals.screen.blit(self.image, (self.rect.x, self.rect.y))
 

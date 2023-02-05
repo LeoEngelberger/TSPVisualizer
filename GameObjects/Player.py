@@ -16,18 +16,25 @@ class PlayerClass:
         print(self.unvisited_nodes)
 
     def add_vertex_to_path(self, vertex):
+
+
         self.current_node = vertex
+
         if not self.last_node_visited:
-            print("If")
             self.start_node = vertex
+
+        elif vertex.has_been_visited:
+            pass
+
         else:
-            print("else")
             pos_1 = (self.last_node_visited.rect.x+5, self.last_node_visited.rect.y+5)
             pos_2 = (self.current_node.rect.x+5, self.current_node.rect.y+5)
             pygame.draw.line(self.globals.screen, self.globals.blue, pos_1, pos_2, 5)
+
         self.path.add(vertex)
         self.path.draw(self.globals.screen)
         self.unvisited_nodes.remove(vertex)
+
         if self.start_node == self.current_node and self.last_node_visited:
             self.is_circle = True
             self.check_if_path_complete()
