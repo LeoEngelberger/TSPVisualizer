@@ -38,7 +38,7 @@ class MainGame:
                         self.game_session.update(event)
 
             pygame.display.update()
-                    #pygame.display.flip()
+
 
     def switch_screen(self):
         if not self.game_session:

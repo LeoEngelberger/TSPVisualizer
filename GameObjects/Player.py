@@ -50,6 +50,8 @@ class PlayerClass:
             print("not all nodes visited")
             return False
 
+    def end_game(self):
+        pass
 
 
 class Path(pygame.sprite.Group):

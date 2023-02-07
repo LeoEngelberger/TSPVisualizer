@@ -58,8 +58,6 @@ class GameSessionClass:
         vertex.rect.x, vertex.rect.y = (x, y)
         return x, y
 
-    def end_game(self):
-        pass
 
     def update(self, event):
 
