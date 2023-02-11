@@ -1,16 +1,11 @@
 import pygame
-import pygame_menu
-from pygame_menu import themes
-import MapGenerator2_0
-import numpy as np
-from mpl_toolkits.basemap import Basemap
-import sqlite3
-import matplotlib.pyplot as plt
 
-import MainMenu as menu
+import MainMenu
+import globals
+
+import MenuSrc.Menu as menu
 import GameObjects.Player as player
 import GameSession as GS
-import globals
 
 # self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
 pygame.init()
@@ -19,39 +14,47 @@ class MainGame:
     def __init__(self):
         self.globals = globals.Globals()
         self.globals.set_main(self)
-        self.main_menu = menu.MainMenu()
+        self.main_menu = MainMenu.MainMenu()
         self.game_session = None
         self.main_loop()
 
     def main_loop(self):
         while True:
             events = pygame.event.get()
-            if self.globals.menu_is_enabled:
-                    self.main_menu.external_update(events)
+            for event in events:
+                if event.type == pygame.QUIT:
+                    exit()
 
-            else:
-                for event in events:
-                    if event.type == pygame.QUIT:
-                        exit()
+                elif self.globals.menu_is_enabled:
+                    self.main_menu.main_component.update(event)
 
-                    else:
-                        self.game_session.update(event)
+                else:
+                    self.game_session.update(event)
 
             pygame.display.update()
+            self.globals.clock.tick(60)
 
+    def start_game_function(self, amount_of_vertices):
+        self.globals.amount_of_vertices = amount_of_vertices
+        self.switch_screen()
 
     def switch_screen(self):
         if not self.game_session:
             self.globals.menu_is_enabled = False
-            amount_of_vertices = self.main_menu.selector.get_value()[0][1]
-            self.game_session = GS.GameSessionClass(amount_of_vertices)
+            del self.main_menu
+            self.main_menu = None
+            self.game_session = GS.GameSessionClass(self.globals.amount_of_vertices)
 
         else:
             del self.game_session
             self.game_session = None
             self.globals.menu_is_enabled = True
+            self.main_menu = MainMenu.MainMenu()
 
         pygame.display.update()
+
+
+
 
 
 

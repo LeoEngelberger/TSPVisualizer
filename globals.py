@@ -11,11 +11,15 @@ class Globals:
 
     def __init__(self):
         self.main = None
+        self.amount_of_vertices = 4
 
         self.red = (255, 0, 0)
         self.blue = (0, 0, 255)
         self.green = (0, 255, 0)
+        self.white = (255,255,255)
+        self.black = (0,0,0)
         self.font = pygame.font.Font('Targa.ttf', 64)
+        self.clock = pygame.time.Clock()
 
         self.main = None
         self.screen_x, self.screen_y = 1440, 960
