@@ -17,7 +17,6 @@ class PlayerClass:
 
     def add_vertex_to_path(self, vertex):
 
-
         self.current_node = vertex
 
         if not self.last_node_visited:

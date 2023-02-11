@@ -60,7 +60,6 @@ class GameSessionClass:
 
 
     def update(self, event):
-
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             for i, t_Vertex in enumerate(self.Vertices):
