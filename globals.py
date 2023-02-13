@@ -18,7 +18,11 @@ class Globals:
         self.green = (0, 255, 0)
         self.white = (255,255,255)
         self.black = (0,0,0)
+        self.widget_color = (24,116,165)
+        self.shadow_color = (135,62,35)
+        self.font_color = (226,135,67)
         self.font = pygame.font.Font('Targa.ttf', 64)
+        self.shadow_font = pygame.font.Font('Targa.ttf', 68)
         self.clock = pygame.time.Clock()
 
         self.main = None

@@ -1,4 +1,4 @@
-import pygame
+
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
 import sqlite3
@@ -19,6 +19,8 @@ m.drawcoastlines()
 
 # Draw country boundaries
 m.drawcountries()
+
+m.shadedrelief()
 
 # Draw lat/lon grid lines every 30 degrees.
 m.drawmeridians(range(-180, 180, 1))

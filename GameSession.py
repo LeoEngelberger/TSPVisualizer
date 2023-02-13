@@ -55,6 +55,7 @@ class GameSessionClass:
         else:
             x = x - 5
         if y == self.globals.screen_y: y = y - 10
+        else: y=y - 10
         vertex.rect.x, vertex.rect.y = (x, y)
         return x, y
 
