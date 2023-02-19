@@ -20,6 +20,7 @@ class Vertex(pygame.sprite.Sprite):
         print(self.name)
         self.image.fill(self.globals.green)
         self.player.add_vertex_to_path(self)
+        self.player.check_if_game_completed()
         self.has_been_visited = True
         if self.globals.main.game_session:
             self.globals.main.game_session.background.blit(self.image, (self.rect.x, self.rect.y))

@@ -13,15 +13,16 @@ class Globals:
         self.main = None
         self.amount_of_vertices = 4
 
-        self.red = (255, 0, 0)
-        self.blue = (0, 0, 255)
-        self.green = (0, 255, 0)
-        self.white = (255,255,255)
-        self.black = (0,0,0)
-        self.widget_color = (24,116,165)
-        self.shadow_color = (135,62,35)
-        self.font_color = (226,135,67)
+        self.red = (255, 0, 0,1)
+        self.blue = (0, 0, 255,1)
+        self.green = (0, 255, 0,1)
+        self.white = (255,255,255,1)
+        self.black = (0,0,0,1)
+        self.widget_color = (24,116,165,0.7)
+        self.shadow_color = (135,62,35,0)
+        self.font_color = (226,135,67,1)
         self.font = pygame.font.Font('Targa.ttf', 64)
+        self.text_font = pygame.font.Font('Targa.ttf', 21)
         self.shadow_font = pygame.font.Font('Targa.ttf', 68)
         self.clock = pygame.time.Clock()
 

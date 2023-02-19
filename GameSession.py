@@ -9,6 +9,9 @@ class GameSessionClass:
     def __init__(self, number_of_vertices):
         self.globals = globals.Globals._instance
 
+        self.is_game_complete = False
+        self.session_running = False
+
         # specific vars used only for setting up the map and translating
         # between Planar Pixel Space and Long/Lat coordinate system
         self.lat_range, self.long_range = 47.9 - 45.73, 10.58 - 5.85
@@ -20,22 +23,22 @@ class GameSessionClass:
         self.Vertices = None    # Places to visit
         self.background = None  # will later be showing Map of Switzerland
         self.amount_of_vertices = number_of_vertices    # How many places a Player can visit defined by menu
-        self.player = player.PlayerClass()  # handles PlayerInput and Interaction
-
+        self.player = player.PlayerClass(self)  # handles PlayerInput and Interaction
         # Final Setups pf Objects before Play
         self.setup_screen()     # set up the game Interface
-        self.setup_map()     # Load and Place Vertices
+        self.load_in_vertices()
         self.player.set_nodes(self.Vertices)    # Inform the Player about the available Places to visit
 
+        self.session_running = True
+
+    # Load in Map of Switzerland & blit it to the screen surface
     def setup_screen(self):
         self.background = pygame.transform.scale(pygame.image.load("map.png"), self.globals.screen.get_size())
         self.globals.screen.blit(self.background, (0, 0))
 
-    def setup_map(self):
-        self.Vertices = pygame.sprite.Group()
-        self.load_in_vertices()
-
+    # load in Vertices and place them on the map
     def load_in_vertices(self):
+        self.Vertices = pygame.sprite.Group()
         conn = sqlite3.connect('Locations.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM Location")
@@ -61,8 +64,18 @@ class GameSessionClass:
 
 
     def update(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
 
-            for i, t_Vertex in enumerate(self.Vertices):
-                if t_Vertex.rect.collidepoint(event.pos):
-                    t_Vertex.clicked()
+        if self.session_running:
+            if self.is_game_complete:
+                print("worked")
+
+            else:
+                if event.type == pygame.MOUSEBUTTONDOWN:
+
+                    for i, t_Vertex in enumerate(self.Vertices):
+                        if t_Vertex.rect.collidepoint(event.pos):
+                            t_Vertex.clicked()
+
+        else:
+            self.globals.main.switch_screen()
+
