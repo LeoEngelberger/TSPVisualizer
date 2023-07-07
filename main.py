@@ -2,12 +2,8 @@ import pygame
 
 import MainMenu
 import globals
+from GameObjects import GameSession as GS
 
-import MenuSrc.Menu as menu
-import GameObjects.Player as player
-import GameSession as GS
-
-# self.m = Basemap(resolution='h',projection='merc', llcrnrlat=45.73, urcrnrlat=47.9, llcrnrlon=5.85, urcrnrlon=10.58)
 pygame.init()
 
 class MainGame:

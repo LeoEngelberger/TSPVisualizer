@@ -33,13 +33,13 @@ class GameSessionClass:
 
     # Load in Map of Switzerland & blit it to the screen surface
     def setup_screen(self):
-        self.background = pygame.transform.scale(pygame.image.load("map.png"), self.globals.screen.get_size())
+        self.background = pygame.transform.scale(pygame.image.load("../map.png"), self.globals.screen.get_size())
         self.globals.screen.blit(self.background, (0, 0))
 
     # load in Vertices and place them on the map
     def load_in_vertices(self):
         self.Vertices = pygame.sprite.Group()
-        conn = sqlite3.connect('Locations.db')
+        conn = sqlite3.connect('../MapGeneration/Locations.db')
         cursor = conn.cursor()
         cursor.execute("SELECT * FROM Location")
         Location = cursor.fetchmany(self.amount_of_vertices)

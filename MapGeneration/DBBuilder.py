@@ -10,7 +10,7 @@ cursor = conn.cursor()
 cursor.execute('''CREATE TABLE Location (id INTEGER PRIMARY KEY, name TEXT,long FLOAT, lat FLOAT)''')
 
 
-with open("locations_txt.txt",'r',encoding='utf-8') as text_file:
+with open("locations_txt.txt", 'r', encoding='utf-8') as text_file:
     text_file = text_file.readlines()
     for line in range(1,len(text_file)):
         text_line = text_file[line].split(';')
